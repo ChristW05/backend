@@ -7,7 +7,10 @@ import {
   ParseIntPipe,
   Post,
   Patch,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
+import { compare } from 'bcrypt';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { CreateUserPostDto } from 'src/users/dtos/CreateUserPost.dto';
 import { CreateUserProfileDto } from 'src/users/dtos/CreateUserProfile.dto';
@@ -16,6 +19,7 @@ import { UsersService } from 'src/users/services/users/users.service';
 
 @Controller('users')
 export class UsersController {
+  userRepository: any;
   constructor(private userService: UsersService) {}
 
   //malaka source avy am DB
@@ -32,11 +36,35 @@ export class UsersController {
   // **********************************************************************************************************
   //miposte donnees any am DB
   @Post()
-  createUser(@Body() createUserDto: CreateUserDto) {
+  async createUser(@Body() createUserDto: CreateUserDto) {
+
     console.log(createUserDto);
-    
     return this.userService.createUser(createUserDto);
   }
+
+//   @Post('login')
+//   async login (
+//     id : number,
+//     password: string 
+//   ) {
+//     const user = await this.userService.findOne({ id });
+
+//     if(!user){
+//       throw new HttpException(
+//         'Utilisateur introuvable ou peut être pas encore créer',
+//         HttpStatus.BAD_REQUEST,
+//       );
+//     }
+//     if(!await compare(password, user.password)){
+//       throw new HttpException(
+//         'Utilisateur introuvable ou peut être pas encore créer',
+//         HttpStatus.BAD_REQUEST,
+//       );
+//     }
+
+//   console.log(user);
+//   return user;
+// }
   // @Post()
   // createUser(
   //   @Body() createUserDto: createUseDto,

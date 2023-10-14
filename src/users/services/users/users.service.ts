@@ -10,9 +10,13 @@ import {
 import { Profile } from 'src/typeorm/entities/Profile';
 import { CreateUserPostDto } from 'src/users/dtos/CreateUserPost.dto';
 import { Post } from 'src/typeorm/entities/Post';
+import { compare, hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
+  find() {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(Profile) private profileRepository: Repository<Profile>,
@@ -67,6 +71,29 @@ export class UsersService {
     user.profile = saveProfile;
     return this.userRepository.save(user);
   }
+   
+  // async login (
+  //     id : number, 
+  //     password: string 
+  //   ) {
+  //     const user = await this.userRepository.findOneBy({ id });
+
+  //     if(!user){
+  //       throw new HttpException(
+  //         'Utilisateur introuvable ou peut être pas encore créer',
+  //         HttpStatus.BAD_REQUEST,
+  //       );
+  //     }
+  //     if(!await compare(password, user.password)){
+  //       throw new HttpException(
+  //         'Utilisateur introuvable ou peut être pas encore créer',
+  //         HttpStatus.BAD_REQUEST,
+  //       );
+  //     }
+
+  //   console.log(user);
+  //   return user;
+  // }
 
   async createUserPost(
     id: number, 

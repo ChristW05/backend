@@ -6,6 +6,8 @@ import { User } from './typeorm/entities/User';
 import { UsersModule } from './users/users.module';
 import { Profile } from './typeorm/entities/Profile';
 import { Post } from './typeorm/entities/Post';
+import { Reservation } from './typeorm/entities/Reservation';
+import { ReservationsModule } from './revervation/reservations.module';
 
 @Module({
   imports: [ 
@@ -16,10 +18,10 @@ import { Post } from './typeorm/entities/Post';
       username: 'root',
       password: '',
       database: 'nest',
-      entities: [User, Profile, Post],
+      entities: [User, Profile, Post, Reservation],
       synchronize: true,
     }),
-    UsersModule,
+    UsersModule, ReservationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
