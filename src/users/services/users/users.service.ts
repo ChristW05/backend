@@ -10,7 +10,6 @@ import {
 import { Profile } from 'src/typeorm/entities/Profile';
 import { CreateUserPostDto } from 'src/users/dtos/CreateUserPost.dto';
 import { Post } from 'src/typeorm/entities/Post';
-import { compare, hash } from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -24,7 +23,7 @@ export class UsersService {
   ) {}
 
   findUsers() {
-    return this.userRepository.find({ relations: ['profile', 'posts'] });
+    return this.userRepository.find({ relations: ['profile', 'posts']});
   }
 
   createUser(userDetails: CreateUserParams) {

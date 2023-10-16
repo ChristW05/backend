@@ -7,10 +7,7 @@ import {
   ParseIntPipe,
   Post,
   Patch,
-  HttpException,
-  HttpStatus,
 } from '@nestjs/common';
-import { compare } from 'bcrypt';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { CreateUserPostDto } from 'src/users/dtos/CreateUserPost.dto';
 import { CreateUserProfileDto } from 'src/users/dtos/CreateUserProfile.dto';
@@ -19,7 +16,6 @@ import { UsersService } from 'src/users/services/users/users.service';
 
 @Controller('users')
 export class UsersController {
-  userRepository: any;
   constructor(private userService: UsersService) {}
 
   //malaka source avy am DB
@@ -123,6 +119,7 @@ export class UsersController {
   ) {
     return this.userService.createUserProfile(id, createUserProfileDto);
   }
+  
   @Post(':id/posts')
   createUserPost(
     @Param('id', ParseIntPipe) id: number,
