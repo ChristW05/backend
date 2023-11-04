@@ -2,10 +2,16 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './typeorm/entities/User';
 import { UsersModule } from './users/users.module';
+import { TransportsModule } from './transports/transports.module';
+import { User } from './typeorm/entities/User';
 import { Profile } from './typeorm/entities/Profile';
 import { Post } from './typeorm/entities/Post';
+import { Escale } from './typeorm/entities/Escale';
+import { Ville } from './typeorm/entities/Ville';
+import { Driver } from './typeorm/entities/Drivers';
+import { Transport } from './typeorm/entities/Transport';
+import { Vehicule } from './typeorm/entities/Vehicule';
 
 @Module({
   imports: [ 
@@ -16,10 +22,10 @@ import { Post } from './typeorm/entities/Post';
       username: 'root',
       password: '',
       database: 'nest',
-      entities: [User, Profile, Post],
+      entities: [User, Profile, Post, Escale, Ville, Driver, Transport, Vehicule],
       synchronize: true,
     }),
-    UsersModule,
+    UsersModule, TransportsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

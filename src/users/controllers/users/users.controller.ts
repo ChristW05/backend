@@ -2,16 +2,21 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
   Param,
   ParseIntPipe,
   Post,
   Patch,
+  Get,
 } from '@nestjs/common';
+import { CreateEscaleDto } from 'src/users/dtos/CreateEscale.dto';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { CreateUserPostDto } from 'src/users/dtos/CreateUserPost.dto';
 import { CreateUserProfileDto } from 'src/users/dtos/CreateUserProfile.dto';
+import { CreateVilleDto } from 'src/users/dtos/CreateVille.dto';
+import { UpdateEscaleDto } from 'src/users/dtos/UpdateEscale.dto';
+import { UpdateReservationDto } from 'src/users/dtos/UpdateResevation.dto';
 import { UpdateUserDto } from 'src/users/dtos/UpdateUser.dto';
+import { UpdateVilleDto } from 'src/users/dtos/UpdateVille.dto';
 import { UsersService } from 'src/users/services/users/users.service';
 
 @Controller('users')
@@ -22,6 +27,10 @@ export class UsersController {
   @Get()
   getUsers() {
     return this.userService.findUsers();
+  }
+  @Get('/escales')
+  getEscales(){
+    return this.userService.findEscales
   }
   // @Get('liste')
   // getUsers(): Promise<
@@ -126,5 +135,59 @@ export class UsersController {
     @Body() createUserPostDto: CreateUserPostDto,
   ) {
     return this.userService.createUserPost(id, createUserPostDto);
+  }
+   @Patch('/posts/:id')
+  async updateReservationById(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateReservationDto: UpdateReservationDto,
+  ) {
+    console.log(updateReservationDto);
+    
+    await this.userService.updateUserPost(id, updateReservationDto);
+  }
+  @Delete('posts/:id')
+  async deleteReservationById(@Param('id', ParseIntPipe) id: number) {
+    await this.userService.deleteUserPost(id);
+  }
+
+  @Post('/escales')
+  async createEscale(@Body() createEscaleDto: CreateEscaleDto) {
+
+    console.log(createEscaleDto);
+    return this.userService.createEscale(createEscaleDto);
+  }
+  @Patch('/escales/:id')
+  async updateEscaleById(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateEscaleDto: UpdateEscaleDto,
+  ) {
+    console.log(updateEscaleDto);
+    
+    await this.userService.updateEscale(id, updateEscaleDto);
+  }
+  @Delete('/escales/:id')
+  async deleteEscaleById(@Param('id', ParseIntPipe) id: number) {
+    await this.userService.deleteEscale(id);
+  }
+
+  @Post('/escales/:id/villes')
+  createEscaleVille(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() createEscaleVilleDto: CreateVilleDto) {
+    console.log(createEscaleVilleDto);
+    return this.userService.createEscaleVille(id, createEscaleVilleDto);
+  }
+  @Patch('/villes/:id')
+  async updateVilleById(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateVilleDto: UpdateVilleDto,
+  ) {
+    console.log(updateVilleDto);
+    
+    await this.userService.updateVille(id, updateVilleDto);
+  }
+  @Delete('/villes/:id')
+  async deleteVilleById(@Param('id', ParseIntPipe) id: number) {
+    await this.userService.deleteVille(id);
   }
 }

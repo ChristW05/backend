@@ -5,9 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/typeorm/entities/User';
 import { Profile } from 'src/typeorm/entities/Profile';
 import { Post } from 'src/typeorm/entities/Post';
+import { Escale } from 'src/typeorm/entities/Escale';
+import { Ville } from 'src/typeorm/entities/Ville';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Profile, Post])],
+  imports: [TypeOrmModule.forFeature([User, Profile, Post, Escale, Ville])],
   controllers: [UsersController],
   providers: [UsersService],
 })
