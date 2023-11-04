@@ -93,3 +93,22 @@ export type UpdateVehiculeParams = {
 export type CreateDriverParams = {
   permis_categories:string;
 }
+export type createCompagnieParams ={
+  name: string;
+  siege: string;
+  lieu_exercice: string;
+  nif: string;
+  stat: string;
+  contact: string;
+  description: string;
+}
+
+export type updateCompagnieParams ={
+  name: string;
+  siege: string;
+  lieu_exercice: string;
+  nif: string;
+  stat: string;
+  contact: string;
+  description: string;
+}

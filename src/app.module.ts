@@ -12,6 +12,8 @@ import { Ville } from './typeorm/entities/Ville';
 import { Driver } from './typeorm/entities/Drivers';
 import { Transport } from './typeorm/entities/Transport';
 import { Vehicule } from './typeorm/entities/Vehicule';
+import { Compagnie } from './typeorm/entities/Compagnie';
+import { CompagniesModule } from './compagnies/compagnies.module';
 
 @Module({
   imports: [ 
@@ -22,10 +24,10 @@ import { Vehicule } from './typeorm/entities/Vehicule';
       username: 'root',
       password: '',
       database: 'nest',
-      entities: [User, Profile, Post, Escale, Ville, Driver, Transport, Vehicule],
+      entities: [User, Profile, Post, Escale, Ville, Driver, Transport, Vehicule, Compagnie],
       synchronize: true,
     }),
-    UsersModule, TransportsModule,
+    UsersModule, TransportsModule,CompagniesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
