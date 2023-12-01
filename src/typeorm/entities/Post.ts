@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne,  PrimaryGeneratedColumn } from 'typeorm';
 import { User } from './User';
+import { Transport } from './Transport';
 
 @Entity({ name: 'user_posts' })
 export class Post {
@@ -14,7 +15,19 @@ export class Post {
     
   @Column()
   point_dArriver: string;
-    
+  
+  @Column()
+  Lat_Depart: number;
+  
+  @Column()
+  Lat_dArriver: number;
+
+  @Column()
+  Poids_Colis_Kg: number;
+
+  @Column()
+  Distance_Km: number;
+  
   @Column()
   prix_a_payer_Ar: number;
 
@@ -22,11 +35,17 @@ export class Post {
   createAt: Date;
 
   @Column()
-  titre: string;
+  typeColis: string;
 
   @Column()
   description: string;
 
+  @Column()
+  transportId: number;
+
   @ManyToOne(() => User, (user) => user.posts)
   user: User;
+
+  @Column()
+  Status:string;
 }

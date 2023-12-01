@@ -1,5 +1,4 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Transport } from "./Transport";
 
 
 @Entity({ name: 'vehicules' })
@@ -18,5 +17,8 @@ export class Vehicule {
 
     @Column()
     marque:string
+
+    @Column()
+    photo:string;
 
 }

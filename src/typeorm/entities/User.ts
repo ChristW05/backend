@@ -1,18 +1,32 @@
 import {
+  BeforeInsert,
   Column,
   Entity,
-  JoinColumn,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Profile } from './Profile';
 import { Post } from './Post';
+import * as bcrypt from 'bcrypt';
 
 @Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
+
+  @Column()
+  nom: string;
+
+  @Column()
+  prenom: string;
+
+  @Column()
+  telephone: string;
+  
+  @Column()
+  age: number;
+
+  @Column()
+  dob: string;
 
   @Column({ unique: true })
   email: string;
@@ -21,14 +35,24 @@ export class User {
   password: string;
 
   @Column()
-  createAt: Date;
+  confirmPassword:string;
+
+  @Column()
+  createAt: string;
 
   @Column({ nullable: true })
-  authStrategy: string;
+  authStrategy: string;;
 
-  @OneToOne(() => Profile)
-  @JoinColumn()
-  profile: Profile;
+  @BeforeInsert()
+  async setPassword(password: string){
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(password || this.password, salt);
+  }
+  // @BeforeInsert()
+  // async setconfirmPassword(confirmPassword: string){
+  //   const salt = await bcrypt.genSalt();
+  //   this.confirmPassword = await bcrypt.hash(confirmPassword || this.confirmPassword, salt);
+  // }
 
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];

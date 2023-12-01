@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Vehicule } from "./Vehicule";
+import { Post } from "./Post";
 
 @Entity({name : 'transport'})
 export class Transport{
@@ -7,26 +8,32 @@ export class Transport{
     id: number
 
     @Column()
-    origine: string
+    origine: string;
 
     @Column()
-    date_depart : Date
+    destination: string;
 
     @Column()
-    date_arrived: Date
+    date_depart : Date;
 
     @Column()
-    prix: number
+    date_arrived: Date;
 
     @Column()
-    description: string
+    heure_depart: Date;
 
     @Column()
-    type: string
+    poids_disponibles: number;
 
+    @Column()
+    description: string;
 
-   @OneToOne(()=>Vehicule,{eager:true,cascade:true,onDelete:'CASCADE'} )
-   @JoinColumn()
-   vehicule : Vehicule;
+    @Column()
+    type: string;
 
+    @Column()
+    companyId:number;
+
+    @Column()
+    vehiculeId:number;
 }

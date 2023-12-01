@@ -3,4 +3,5 @@ export class UpdateVehiculeDto{
     couleur:string;
     type:string;
     marque:string;
+    // photo:string;
 }

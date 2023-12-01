@@ -3,4 +3,5 @@ export class CreateVehiculeDto{
     couleur:string;
     type:string;
     marque:string;
+    photo:string;
 }

@@ -1,37 +1,54 @@
 export type CreateUserParams = {
-  email: string;
-  password: string;
-};
-export type UpdateUserParams = {
-  email: string;
-  password: string;
-};
-
-export type CreateUserProfileParams = {
   nom: string;
   prenom: string;
-  telephone: number,
-  email: string,
-  password: string,
-  confrimPassword:string,
+  telephone: string;
   age: number;
   dob: string;
+  email: string;
+  password: string;
+  confirmPassword:string;
+  createAt: string;
+};
+export type UpdateUserParams = {
+  nom: string;
+  prenom: string;
+  telephone: string;
+  age: number;
+  dob: string;
+  email: string;
+  password: string;
+  confirmPassword:string;
+  createAt: string;
 };
 export type CreateUserPostParams = {
-  titre: string;
-  description: string;
   destinataire: string;
   point_de_recuperation: string;
   point_dArriver: string;
+  Lat_Depart: number;
+  Lat_dArriver: number;
+  Poids_Colis_Kg: number;
+  Distance_Km: number;
   prix_a_payer_Ar: number;
+  createAt: Date;
+  typeColis: string;
+  description: string;
+  transportId: number;
+  Status:string;
 };
 export type UpdateReservationParams = {
-  titre: string;
-  description: string;
   destinataire: string;
   point_de_recuperation: string;
   point_dArriver: string;
+  Lat_Depart: number;
+  Lat_dArriver: number;
+  Poids_Colis_Kg: number;
+  Distance_Km: number;
   prix_a_payer_Ar: number;
+  createAt: Date;
+  typeColis: string;
+  description: string;
+  transportId: number;
+  Status:string;
 };
 
 export type CreateEscaleParams = {
@@ -57,23 +74,29 @@ export type UpdateVilleParams = {
 }
 
 export type CreateTansportParams = {
-  origine: string;
-  date_depart: Date;
-  date_arrived: Date;
-  prix: number;
-  descripton: string;
-  type: string;
-  id_vehicule: number;
+    origine: string;
+    destination: string;
+    date_depart : Date;
+    date_arrived: Date;
+    heure_depart: Date;
+    poids_disponibles: number;
+    description: string;
+    type: string;
+    companyId:number;
+    vehiculeId:number;
 }
 
 export type UpdateTansportParams = {
   origine: string;
-  date_depart: Date;
+  destination: string;
+  date_depart : Date;
   date_arrived: Date;
-  prix: number;
-  descripton: string;
+  heure_depart: Date;
+  poids_disponibles: number;
+  description: string;
   type: string;
-  id_vehicule: number;
+  companyId:number;
+  vehiculeId:number;
 }
 
 export type CreateVehiculeParams = {
@@ -92,4 +115,23 @@ export type UpdateVehiculeParams = {
 
 export type CreateDriverParams = {
   permis_categories:string;
+}
+export type createCompagnieParams ={
+  name: string;
+  siege: string;
+  lieu_exercice: string;
+  nif: string;
+  stat: string;
+  contact: string;
+  description: string;
+}
+
+export type updateCompagnieParams ={
+  name: string;
+  siege: string;
+  lieu_exercice: string;
+  nif: string;
+  stat: string;
+  contact: string;
+  description: string;
 }

@@ -1,9 +1,12 @@
 export class UpdateTransportDto{
     origine: string;
-    date_depart: Date;
+    destination: string;
+    date_depart : Date;
     date_arrived: Date;
-    prix: number;
-    descripton: string;
+    heure_depart: Date;
+    poids_disponibles: number;
+    description: string;
     type: string;
-    id_vehicule: number;
+    companyId:number;
+    vehiculeId:number;
 }

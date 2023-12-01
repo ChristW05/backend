@@ -22,8 +22,13 @@ export class Escale {
     @Column()
     HeureArriver: string;
 
+    @Column()
+    transportId:number;
+
     @OneToOne(() => Ville,
     { eager:true, cascade: true, onDelete: 'CASCADE' })
     @JoinColumn()
     ville: Ville;
+
+    
 }
