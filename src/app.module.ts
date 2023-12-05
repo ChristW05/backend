@@ -12,6 +12,8 @@ import { Vehicule } from './typeorm/entities/Vehicule';
 import { Compagnie } from './typeorm/entities/Compagnie';
 import { JwtModule } from '@nestjs/jwt';
 import { ProjetModule } from './projet/projet.module';
+import { LogoCooperative } from './typeorm/entities/LogoCooperative';
+import { ImageVoiture } from './typeorm/entities/ImageVoiture';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { ProjetModule } from './projet/projet.module';
       username: 'root',
       password: '',
       database: 'nest',
-      entities: [User,Post, Escale, Ville, Driver, Transport, Vehicule, Compagnie],
+      entities: [User,Post, Escale, Ville, Driver, Transport, Vehicule, Compagnie, LogoCooperative, ImageVoiture],
       synchronize: true,
     }),
     ProjetModule,
@@ -30,8 +32,8 @@ import { ProjetModule } from './projet/projet.module';
       secret : 'secret',
       signOptions : {expiresIn: '1d'}
     })
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+]
 })
+//   controllers: [AppController],
+//   providers: [AppService],
 export class AppModule {}
