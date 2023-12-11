@@ -76,27 +76,23 @@ export type UpdateVilleParams = {
 export type CreateTansportParams = {
     origine: string;
     destination: string;
-    date_depart : Date;
+    date_depart : string;
     date_arrived: Date;
     heure_depart: Date;
     poids_disponibles: number;
     description: string;
     type: string;
-    companyId:number;
-    vehiculeId:number;
 }
 
 export type UpdateTansportParams = {
   origine: string;
   destination: string;
-  date_depart : Date;
+  date_depart : string;
   date_arrived: Date;
   heure_depart: Date;
   poids_disponibles: number;
   description: string;
   type: string;
-  companyId:number;
-  vehiculeId:number;
 }
 
 export type CreateVehiculeParams = {
@@ -124,6 +120,11 @@ export type createCompagnieParams ={
   stat: string;
   contact: string;
   description: string;
+}
+
+export type createLogoCompagnieParams ={
+  photo: string;
+  createAt: Date;
 }
 
 export type updateCompagnieParams ={

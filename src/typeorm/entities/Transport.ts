@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Vehicule } from "./Vehicule";
 import { Post } from "./Post";
 
@@ -14,7 +14,7 @@ export class Transport{
     destination: string;
 
     @Column()
-    date_depart : Date;
+    date_depart : string;
 
     @Column()
     date_arrived: Date;
@@ -31,9 +31,6 @@ export class Transport{
     @Column()
     type: string;
 
-    @Column()
-    companyId:number;
-
-    @Column()
-    vehiculeId:number;
+    @ManyToOne(() => Vehicule, (vehicule) => vehicule.transports)
+    vehicule: Vehicule;
 }

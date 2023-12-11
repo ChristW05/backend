@@ -1,4 +1,18 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { 
+  Body, 
+  Controller, 
+  Delete, 
+  Get, 
+  Param, 
+  ParseIntPipe, 
+  Patch, 
+  Post, 
+  Put, 
+  Req, 
+  Res, 
+  UploadedFile, 
+  UseInterceptors 
+} from '@nestjs/common';
 import { ProjetService } from './projet.service';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { UpdateUserDto } from 'src/users/dtos/UpdateUser.dto';
@@ -20,6 +34,7 @@ import { UpdateVehiculeDto } from 'src/transports/dtos/UpdateVehiculeDto';
 import { CreateDriverDto } from 'src/transports/dtos/CreateDriverDto';
 import { SETTING } from 'src/app.utils';
 import { User } from 'src/typeorm/entities/User';
+import { CreateLogoCompagnieDto } from 'src/compagnies/dots/CreateLogoCompagnie.dto';
 
 @Controller('projet')
 export class ProjetController {
@@ -40,6 +55,10 @@ export class ProjetController {
     @Get('/users')
     getUsers() {
       return this.projetService.findUsers();
+    }
+    @Get('/logo')
+    getLogo() {
+      return this.projetService.findLogo();
     }
     @Get('/escales')
     getEscales(){
@@ -134,6 +153,23 @@ export class ProjetController {
     createCompagnie(@Body() createCompagnieDto: createCompagnieDto){
         this.projetService.createCompagnie(createCompagnieDto)    
     }
+
+    // @Post('/company/:id/logo')
+    // @UseInterceptors(FileInterceptor('file', {
+    //   storage : diskStorage({
+    //     destination : "./LogoCompany",
+    //     filename :  (Req, file, cb) => {
+    //       cb(null, `${file.originalname}`)
+    //     }
+    //   })
+    // }))
+    // async uploadedFiles(
+    //   @Param('id', ParseIntPipe) id: number,
+    //   @Body() createLogoCompanyDto: CreateLogoCompagnieDto,
+    // ) {
+    //   console.log("telechargement logo company avec sucess.")
+    //   return this.projetService.uploadedFiles(id, createLogoCompanyDto);
+    // }
     
     @Get('/company/:id')
     async getOneCompagnie(@Param('id', ParseIntPipe) id: number){
@@ -158,13 +194,12 @@ export class ProjetController {
         return  this.projetService.findTransports();
     }
 
-    @Post('/company/:id/vehicule/:idv/transport')
+    @Post('/vehicule/:id/transport')
     createTransport(
         @Param('id', ParseIntPipe) id: number,
-        @Param('idv', ParseIntPipe) idv: number,
         @Body() createTransportDto: CreateTransportDto
         ){
-        return this.projetService.createTransport(id,idv, createTransportDto);
+        return this.projetService.createTransport(id, createTransportDto);
     }
 
     @Get('/transport/:id')
@@ -189,10 +224,10 @@ export class ProjetController {
             await this.projetService.deleteTransport(id);
         }
 
-    @Post('/vehicules')
+    @Post('/company/:id/vehicule')
     @UseInterceptors(FileInterceptor('photo',{
         storage:diskStorage({
-            destination: './files',
+            destination: './public/files',
             filename: (req, file ,callback) =>{
                 const uniqueSuffix = Date.now() +'-'+Math.round(Math.random()*1e9)
                 const ext = extname(file.originalname);
@@ -202,17 +237,14 @@ export class ProjetController {
         })
     }))
     createVehicle(
+      @Param('id', ParseIntPipe) id: number,
         @UploadedFile() file:Express.Multer.File,
-        @Body() createVehiclesDto: CreateVehiculeDto,
+        @Body() createVehiculesDto: CreateVehiculeDto,
     ){
-        
         // console.log(file);
-        
-
-        createVehiclesDto.photo = file.filename
+        createVehiculesDto.photo = file.filename
         // console.log(createVehiclesDto);
-        
-        return this.projetService.createVehicle(createVehiclesDto);
+        return this.projetService.createVehicule(id, createVehiculesDto);
     }
     
     // @Post('/driver/:id/vehicules')
@@ -224,7 +256,18 @@ export class ProjetController {
         
     //     return this.projetService.createVehicles(id, createVehiclesDto);
     // }
-
+    // @Post('/image')
+    // @UseInterceptors(FileInterceptor('file', {
+    //   storage : diskStorage({
+    //     destination : "./imagevoiture",
+    //     filename :  (Req, file, cb) => {
+    //       cb(null, `${file.originalname}`)
+    //     }
+    //   })
+    // }))
+    // async uploadedFile(){
+    //   return "telechargement photo voiture de la company avec sucess."
+    // }
     @Put('/vehicule/:id')
     async updateVehiculeById(
         @Param('id', ParseIntPipe) id:number,
@@ -238,31 +281,31 @@ export class ProjetController {
         return this.projetService.deleteVehiculeById(id);
     }
 
-    @Post('/vehicule/:id/driver')
-    @UseInterceptors(FileInterceptor('photo',{
-        storage:diskStorage({
-            destination: './files',
-            filename: (req, file ,callback) =>{
-                const uniqueSuffix = Date.now() +'-'+Math.round(Math.random()*1e9)
-                const ext = extname(file.originalname);
-                const fileName = `${uniqueSuffix}${ext}`;
-                callback(null,fileName)
-            }
-        })
-    }))
-    async createDriver(
-        @UploadedFile() file:Express.Multer.File,
-        @Param('id', ParseIntPipe) id:number,
-        @Body() createDriverDetails:CreateDriverDto
-        ){
-            createDriverDetails.photo= file.filename
+    // @Post('/vehicule/:id/driver')
+    // @UseInterceptors(FileInterceptor('photo',{
+    //     storage:diskStorage({
+    //         destination: './files',
+    //         filename: (req, file ,callback) =>{
+    //             const uniqueSuffix = Date.now() +'-'+Math.round(Math.random()*1e9)
+    //             const ext = extname(file.originalname);
+    //             const fileName = `${uniqueSuffix}${ext}`;
+    //             callback(null,fileName)
+    //         }
+    //     })
+    // }))
+    // async createDriver(
+    //     @UploadedFile() file:Express.Multer.File,
+    //     @Param('id', ParseIntPipe) id:number,
+    //     @Body() createDriverDetails:CreateDriverDto
+    //     ){
+    //         createDriverDetails.photo= file.filename
 
-            // suprimer image dans un dossier avec le path
+    //         // suprimer image dans un dossier avec le path
 
-            // unlinkSync('files/Capture001.png-1699874859262-607391159.png')
+    //         // unlinkSync('files/Capture001.png-1699874859262-607391159.png')
 
-        return this.projetService.createDriver(id, createDriverDetails)
-    }
+    //     return this.projetService.createDriver(id, createDriverDetails)
+    // }
 
 
 
@@ -274,13 +317,14 @@ export class ProjetController {
         return this.projetService.updateDriver(id, createDriverDetails)
     }
 
-    @Put('/vehicule/:idv/driver/:id')
+    
+
+    @Put('driver/:id')
     async updateDriverVehicule(
         @Param('id', ParseIntPipe) id:number,
-        @Param('idv', ParseIntPipe) idv:number,
         @Body() createDriverDetails:CreateDriverDto
         ){
-        return this.projetService.updateDriverVehicule(id,idv, createDriverDetails)
+        return this.projetService.updateDriverVehicule(id, createDriverDetails)
     }
 
     @Delete('/driver/:id')

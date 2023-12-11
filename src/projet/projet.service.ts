@@ -18,7 +18,7 @@ import { Vehicule } from 'src/typeorm/entities/Vehicule';
 import { Ville } from 'src/typeorm/entities/Ville';
 import { CreateUserPostDto } from 'src/users/dtos/CreateUserPost.dto';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
-
+import { CreateLogoCompagnieDto } from 'src/compagnies/dots/CreateLogoCompagnie.dto';
 import { 
   CreateDriverParams, 
   CreateEscaleParams, 
@@ -32,12 +32,14 @@ import {
     UpdateUserParams, 
     UpdateVehiculeParams, 
     UpdateVilleParams, 
-    createCompagnieParams, 
+    createCompagnieParams,
     updateCompagnieParams 
   } from 'src/utils/type';
 import { QueryFailedError, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { LogoCooperative } from 'src/typeorm/entities/LogoCooperative';
+import { CreateVehiculeDto } from 'src/transports/dtos/CreateVehiculeDto';
 
 @Injectable()
 export class ProjetService {
@@ -48,15 +50,19 @@ export class ProjetService {
         @InjectRepository(Ville) private villeRepository: Repository<Ville>,
         @InjectRepository(Compagnie) private companyRepository: Repository<Compagnie>,
         @InjectRepository(Transport) private transportRepository: Repository<Transport>,
-        @InjectRepository(Vehicule) private vehiclesRepository: Repository<Vehicule>,
+        @InjectRepository(Vehicule) private vehiculesRepository: Repository<Vehicule>,
         @InjectRepository(Driver) private driverRepository: Repository<Driver>,
         @InjectRepository(Compagnie) private compagnieRepository: Repository<Compagnie>,
+        @InjectRepository(LogoCooperative) private logoRepository: Repository<LogoCooperative>,
         private jwtService: JwtService,
         ){}
       
     
       findUsers() {
         return this.userRepository.find({ relations: ['posts']});
+      }
+      findLogo() {
+        return this.logoRepository.find({ relations: ['compagnie']});
       }
     
       findEscales() {
@@ -212,7 +218,7 @@ export class ProjetService {
         
 
     findCompagnies(){
-        return this.companyRepository.find()
+        return this.companyRepository.find({ relations: ['logos', 'vehicules']})
     }
 
     findOneCompagnies(id: number){
@@ -231,6 +237,23 @@ export class ProjetService {
     deleteCompagnie(id: number){
         return this.companyRepository.delete({ id })
     }
+  //   async uploadedFiles(
+  //       id: number, 
+  //       logoCompagnieDetails: CreateLogoCompagnieDto) {
+  //       const compagnie = await this.compagnieRepository.findOneBy({ id });
+  //       if (!compagnie)
+  //         throw new HttpException(
+  //           'Company introuvable ou peut être pas encore créer',
+  //           HttpStatus.BAD_REQUEST,
+  //         );
+  //       const newLogo = this.logoRepository.create({
+  //         ...logoCompagnieDetails,
+  //         compagnie,
+  //       });
+  //       console.log(newLogo);
+  //       return await this.logoRepository.save(newLogo);
+  //       console.log("Enregistrement avec success");
+  // }
 
 
 
@@ -247,18 +270,16 @@ export class ProjetService {
     
        async createTransport(
             id:number,
-            idv:number,
             transportDetails: CreateTansportParams
-            ){    
-            const company = await this.compagnieRepository.findOneBy({id})
-            const vehicule = await this.vehiclesRepository.findOneBy({id:idv})
-            const newTransport = await this.transportRepository.create({
+            ){
+              const date = new Date();
+              const vehicule = await this.vehiculesRepository.findOneBy({id})
+              const newTransport = await this.transportRepository.create({
                 ...transportDetails,
-                date_depart: new Date(),
-            })
-            newTransport.companyId = (await company).id
-            newTransport.vehiculeId = (await vehicule).id
-            return this.transportRepository.save(newTransport)
+                vehicule,
+                date_depart: date.toLocaleDateString(),
+              })
+              return this.transportRepository.save(newTransport)
         }
     
         updateTransportById(id: number , updateTransportDetails: UpdateTansportParams){
@@ -270,11 +291,16 @@ export class ProjetService {
             return this.transportRepository.delete({id});
         }
     
-        async createVehicle(
-            createVehicleDetails: CreateVehiculeParams
+        async createVehicule(
+            id:number,
+            createVehiculeDetails: CreateVehiculeParams
         ){
-    
-        return this.vehiclesRepository.save(createVehicleDetails)
+          const compagnie = await this.compagnieRepository.findOneBy({id})
+            const newVehicule = await this.vehiculesRepository.create({
+                ...createVehiculeDetails,
+                compagnie,
+            })
+        return this.vehiculesRepository.save(newVehicule)
             
         }
     
@@ -283,7 +309,7 @@ export class ProjetService {
             updateVehiculeDetails: UpdateVehiculeParams,
             ){
             
-            return this.vehiclesRepository.update({id} , {... updateVehiculeDetails})
+            return this.vehiculesRepository.update({id} , {... updateVehiculeDetails})
         }
     
         async deleteVehiculeById(id: number){
@@ -296,14 +322,14 @@ export class ProjetService {
                 }
             }
             // console.log(driver[0].vehiculeId)
-            return this.vehiclesRepository.delete({id});
+            return this.vehiculesRepository.delete({id});
         }
     
         async createDriver(
             id:number,
             createDriverDetails: CreateDriverParams
         ){
-            const vehicule = this.vehiclesRepository.findOneBy({id})
+            const vehicule = this.vehiculesRepository.findOneBy({id})
             const newDriver =  this.driverRepository.create(createDriverDetails)
             newDriver.vehiculeId = (await vehicule).id
             return this.driverRepository.save(newDriver)
@@ -317,11 +343,9 @@ export class ProjetService {
         }
     
         async updateDriverVehicule(
-            idv:number,
             id:number,
             createDriverDetails: CreateDriverParams
         ){
-            const Veh = await this.vehiclesRepository.findOneBy({id})
             const driverV = await this.driverRepository.findOneBy({id})
             // const upadteDriver = this.driverRepository.preload(createDriverDetails) 
             // ;(await upadteDriver).vehiculeId = idv
@@ -396,5 +420,6 @@ export class ProjetService {
             message: 'Deconnexion avec succès.' 
           };
         }
+        
     
 }

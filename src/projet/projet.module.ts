@@ -11,9 +11,10 @@ import { Driver } from 'src/typeorm/entities/Drivers';
 import { Post } from 'src/typeorm/entities/Post';
 import { Ville } from 'src/typeorm/entities/Ville';
 import { JwtService } from '@nestjs/jwt';
+import { LogoCooperative } from 'src/typeorm/entities/LogoCooperative';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Transport,User,Compagnie,Escale,Vehicule,Driver,Post,Ville])],
+  imports: [TypeOrmModule.forFeature([Transport,User,Compagnie,Escale,Vehicule,Driver,Post,Ville, LogoCooperative])],
   controllers: [ProjetController],
   providers: [ProjetService, JwtService]
 })

@@ -1,4 +1,7 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { VoitureImage } from "./VoitureImage";
+import { Compagnie } from "./Compagnie";
+import { Transport } from "./Transport";
 
 
 @Entity({ name: 'vehicules' })
@@ -20,5 +23,14 @@ export class Vehicule {
 
     @Column()
     photo:string;
+
+    @ManyToOne(() => Compagnie, (compagnie) => compagnie.vehicules)
+    compagnie: Compagnie;
+
+    // @OneToMany(() => VoitureImage, (image) => image.vehicule)
+    // images: VoitureImage[];
+
+    @OneToMany(() => Transport, (transport) => transport.vehicule)
+    transports: Transport[];
 
 }
